@@ -1,7 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.core.security import create_access_token, hash_password, verify_password
+from app.api.dependencies import get_current_user
+from app.core.security import (
+    create_access_token,
+    hash_password,
+    verify_password,
+)
 from app.db.database import get_db
 from app.models.user import User
 from app.schemas.user import (
@@ -10,14 +15,8 @@ from app.schemas.user import (
     UserRegister,
     UserResponse,
 )
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from app.core.security import (
-    create_access_token,
-    decode_access_token,
-    hash_password,
-    verify_password,
-)
-security = HTTPBearer()
+
+
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"],
@@ -96,26 +95,13 @@ def login(
         access_token=access_token,
         token_type="bearer",
     )
+
+
 @router.get(
     "/me",
     response_model=UserResponse,
 )
-def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    db: Session = Depends(get_db),
+def get_current_user_profile(
+    current_user: User = Depends(get_current_user),
 ):
-    user_id = decode_access_token(credentials.credentials)
-
-    user = (
-        db.query(User)
-        .filter(User.id == int(user_id))
-        .first()
-    )
-
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
-        )
-
-    return user
+    return current_user

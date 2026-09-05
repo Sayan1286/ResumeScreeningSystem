@@ -1,4 +1,5 @@
 from logging.config import fileConfig
+from app.models.job import Job
 
 from sqlalchemy import engine_from_config, pool
 from alembic import context
