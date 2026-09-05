@@ -293,3 +293,61 @@ def test_screening_result_rejected_status():
     assert result.rank == 2
     assert result.match_percentage == 45.0
     assert result.status == "Rejected"
+def test_screening_explanation_for_strong_candidate():
+    from app.services.screening_explanation import (
+        generate_screening_explanation,
+    )
+
+    explanation = generate_screening_explanation(
+        skill_score=40.0,
+        experience_score=25.0,
+        education_score=15.0,
+        keyword_score=20.0,
+        total_score=100.0,
+    )
+
+    assert explanation["skills"] == "Strong match"
+    assert explanation["experience"] == "Meets experience requirement"
+    assert explanation["education"] == "Education requirement matched"
+    assert explanation["keywords"] == "All keywords matched"
+    assert explanation["recommendation"] == "Shortlisted"
+
+
+def test_screening_explanation_for_rejected_candidate():
+    from app.services.screening_explanation import (
+        generate_screening_explanation,
+    )
+
+    explanation = generate_screening_explanation(
+        skill_score=0.0,
+        experience_score=0.0,
+        education_score=0.0,
+        keyword_score=0.0,
+        total_score=0.0,
+    )
+
+    assert explanation["skills"] == "No matching skills found"
+    assert explanation["experience"] == "Does not meet experience requirement"
+    assert explanation["education"] == "Education requirement not matched"
+    assert explanation["keywords"] == "No matching keywords found"
+    assert explanation["recommendation"] == "Rejected"
+
+
+def test_screening_explanation_for_partial_candidate():
+    from app.services.screening_explanation import (
+        generate_screening_explanation,
+    )
+
+    explanation = generate_screening_explanation(
+        skill_score=20.0,
+        experience_score=10.0,
+        education_score=0.0,
+        keyword_score=5.0,
+        total_score=35.0,
+    )
+
+    assert explanation["skills"] == "Partial match"
+    assert explanation["experience"] == "Partial experience match"
+    assert explanation["education"] == "Education requirement not matched"
+    assert explanation["keywords"] == "Partial keyword match"
+    assert explanation["recommendation"] == "Rejected"
