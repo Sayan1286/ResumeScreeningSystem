@@ -2,9 +2,10 @@ import io
 import uuid
 from pathlib import Path
 
+import fitz
+from docx import Document
 from fastapi.testclient import TestClient
 
-from app.core.config import settings
 from app.db.database import SessionLocal
 from app.main import app
 from app.models.job import Job
@@ -52,6 +53,29 @@ def create_test_job(token: str) -> int:
     return response.json()["id"]
 
 
+def create_test_pdf() -> io.BytesIO:
+    document = fitz.open()
+
+    try:
+        page = document.new_page()
+
+        page.insert_text(
+            (72, 72),
+            "Test Resume",
+        )
+
+        pdf_buffer = io.BytesIO(
+            document.tobytes()
+        )
+
+        pdf_buffer.seek(0)
+
+        return pdf_buffer
+
+    finally:
+        document.close()
+
+
 def cleanup_user(email: str) -> None:
     db = SessionLocal()
 
@@ -70,7 +94,9 @@ def cleanup_user(email: str) -> None:
             )
 
             for resume in resumes:
-                Path(resume.file_path).unlink(missing_ok=True)
+                Path(resume.file_path).unlink(
+                    missing_ok=True
+                )
 
             db.query(Resume).filter(
                 Resume.user_id == user.id
@@ -93,16 +119,47 @@ def test_upload_pdf_resume():
     try:
         job_id = create_test_job(token)
 
+        document = fitz.open()
+
+        try:
+            page = document.new_page()
+
+            page.insert_text(
+                (72, 72),
+                "John Doe",
+            )
+
+            page.insert_text(
+                (72, 100),
+                "Python FastAPI PostgreSQL",
+            )
+
+            page.insert_text(
+                (72, 128),
+                "Backend Engineer with 3 years of experience",
+            )
+
+            pdf_buffer = io.BytesIO(
+                document.tobytes()
+            )
+
+        finally:
+            document.close()
+
+        pdf_buffer.seek(0)
+
         response = client.post(
             f"/resumes?job_id={job_id}",
             files={
                 "file": (
                     "resume.pdf",
-                    io.BytesIO(b"%PDF-1.4 test resume"),
+                    pdf_buffer,
                     "application/pdf",
                 )
             },
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
 
         assert response.status_code == 201
@@ -114,6 +171,10 @@ def test_upload_pdf_resume():
         assert data["file_size"] > 0
         assert data["job_id"] == job_id
         assert data["user_id"] is not None
+
+        assert "John Doe" in data["extracted_text"]
+        assert "Python FastAPI PostgreSQL" in data["extracted_text"]
+        assert "3 years of experience" in data["extracted_text"]
 
         stored_path = Path(data["file_path"])
 
@@ -130,16 +191,33 @@ def test_upload_docx_resume():
     try:
         job_id = create_test_job(token)
 
+        document = Document()
+
+        document.add_paragraph("John Doe")
+        document.add_paragraph(
+            "Python FastAPI PostgreSQL"
+        )
+        document.add_paragraph(
+            "Backend Engineer with 3 years of experience"
+        )
+
+        docx_buffer = io.BytesIO()
+
+        document.save(docx_buffer)
+        docx_buffer.seek(0)
+
         response = client.post(
             f"/resumes?job_id={job_id}",
             files={
                 "file": (
                     "resume.docx",
-                    io.BytesIO(b"fake docx content"),
+                    docx_buffer,
                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 )
             },
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
 
         assert response.status_code == 201
@@ -148,6 +226,9 @@ def test_upload_docx_resume():
 
         assert data["original_filename"] == "resume.docx"
         assert data["file_type"] == "docx"
+        assert "John Doe" in data["extracted_text"]
+        assert "Python FastAPI PostgreSQL" in data["extracted_text"]
+        assert "3 years of experience" in data["extracted_text"]
 
     finally:
         cleanup_user(email)
@@ -168,10 +249,13 @@ def test_reject_unsupported_resume_type():
                     "text/plain",
                 )
             },
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
 
         assert response.status_code == 400
+
         assert response.json()["detail"] == (
             "Only PDF and DOCX files are allowed"
         )
@@ -186,7 +270,7 @@ def test_upload_requires_authentication():
         files={
             "file": (
                 "resume.pdf",
-                io.BytesIO(b"%PDF-1.4 test"),
+                create_test_pdf(),
                 "application/pdf",
             )
         },
@@ -207,15 +291,20 @@ def test_upload_to_another_users_job_is_rejected():
             files={
                 "file": (
                     "resume.pdf",
-                    io.BytesIO(b"%PDF-1.4 test"),
+                    create_test_pdf(),
                     "application/pdf",
                 )
             },
-            headers={"Authorization": f"Bearer {other_token}"},
+            headers={
+                "Authorization": f"Bearer {other_token}"
+            },
         )
 
         assert response.status_code == 404
-        assert response.json()["detail"] == "Job not found"
+
+        assert response.json()["detail"] == (
+            "Job not found"
+        )
 
     finally:
         cleanup_user(owner_email)
@@ -228,24 +317,31 @@ def test_list_resumes():
     try:
         job_id = create_test_job(token)
 
-        for filename in ("first.pdf", "second.pdf"):
+        for filename in (
+            "first.pdf",
+            "second.pdf",
+        ):
             response = client.post(
                 f"/resumes?job_id={job_id}",
                 files={
                     "file": (
                         filename,
-                        io.BytesIO(b"%PDF-1.4 test"),
+                        create_test_pdf(),
                         "application/pdf",
                     )
                 },
-                headers={"Authorization": f"Bearer {token}"},
+                headers={
+                    "Authorization": f"Bearer {token}"
+                },
             )
 
             assert response.status_code == 201
 
         response = client.get(
             "/resumes",
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
 
         assert response.status_code == 200
@@ -266,18 +362,24 @@ def test_get_resume():
             files={
                 "file": (
                     "resume.pdf",
-                    io.BytesIO(b"%PDF-1.4 test"),
+                    create_test_pdf(),
                     "application/pdf",
                 )
             },
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
+
+        assert upload_response.status_code == 201
 
         resume_id = upload_response.json()["id"]
 
         response = client.get(
             f"/resumes/{resume_id}",
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
 
         assert response.status_code == 200
@@ -293,11 +395,16 @@ def test_get_nonexistent_resume():
     try:
         response = client.get(
             "/resumes/999999999",
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
 
         assert response.status_code == 404
-        assert response.json()["detail"] == "Resume not found"
+
+        assert response.json()["detail"] == (
+            "Resume not found"
+        )
 
     finally:
         cleanup_user(email)
@@ -314,16 +421,19 @@ def test_delete_resume():
             files={
                 "file": (
                     "resume.pdf",
-                    io.BytesIO(b"%PDF-1.4 test"),
+                    create_test_pdf(),
                     "application/pdf",
                 )
             },
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
 
         assert upload_response.status_code == 201
 
         data = upload_response.json()
+
         resume_id = data["id"]
         file_path = Path(data["file_path"])
 
@@ -331,7 +441,9 @@ def test_delete_resume():
 
         response = client.delete(
             f"/resumes/{resume_id}",
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
 
         assert response.status_code == 204
@@ -339,7 +451,9 @@ def test_delete_resume():
 
         get_response = client.get(
             f"/resumes/{resume_id}",
-            headers={"Authorization": f"Bearer {token}"},
+            headers={
+                "Authorization": f"Bearer {token}"
+            },
         )
 
         assert get_response.status_code == 404

@@ -64,7 +64,6 @@ async def save_resume_file(
                     )
 
                 output.write(chunk)
-
     finally:
         await file.close()
 

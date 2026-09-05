@@ -9,6 +9,7 @@ from app.models.job import Job
 from app.models.resume import Resume
 from app.models.user import User
 from app.schemas.resume import ResumeResponse
+from app.services.resume_parser import extract_resume_text
 from app.utils.resume_storage import (
     generate_stored_filename,
     save_resume_file,
@@ -56,6 +57,19 @@ async def upload_resume(
         stored_filename,
     )
 
+    try:
+        extracted_text = extract_resume_text(
+            file_path,
+            extension.lstrip("."),
+        )
+    except Exception:
+        Path(file_path).unlink(missing_ok=True)
+
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Could not extract text from resume",
+        )
+
     resume = Resume(
         user_id=current_user.id,
         job_id=job.id,
@@ -64,6 +78,7 @@ async def upload_resume(
         file_path=file_path,
         file_type=extension.lstrip("."),
         file_size=file_size,
+        extracted_text=extracted_text,
     )
 
     try:
