@@ -247,3 +247,49 @@ def test_optional_requirements_do_not_reduce_score():
     assert result["education_score"] == 15.0
     assert result["keyword_score"] == 20.0
     assert result["total_score"] == 100.0
+def test_screening_result_has_ranking_fields():
+    from app.schemas.screening import ScreeningResult
+
+    result = ScreeningResult(
+        rank=1,
+        resume_id=1,
+        candidate_id=1,
+        candidate_name="Test Candidate",
+        candidate_email="test@example.com",
+        original_filename="resume.pdf",
+        skill_score=40.0,
+        experience_score=25.0,
+        education_score=15.0,
+        keyword_score=20.0,
+        total_score=100.0,
+        match_percentage=100.0,
+        status="Shortlisted",
+    )
+
+    assert result.rank == 1
+    assert result.match_percentage == 100.0
+    assert result.status == "Shortlisted"
+
+
+def test_screening_result_rejected_status():
+    from app.schemas.screening import ScreeningResult
+
+    result = ScreeningResult(
+        rank=2,
+        resume_id=2,
+        candidate_id=2,
+        candidate_name="Rejected Candidate",
+        candidate_email="rejected@example.com",
+        original_filename="resume.pdf",
+        skill_score=20.0,
+        experience_score=10.0,
+        education_score=10.0,
+        keyword_score=5.0,
+        total_score=45.0,
+        match_percentage=45.0,
+        status="Rejected",
+    )
+
+    assert result.rank == 2
+    assert result.match_percentage == 45.0
+    assert result.status == "Rejected"

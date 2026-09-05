@@ -60,12 +60,19 @@ def screen_job_candidates(
 
         results.append(
             ScreeningResult(
+                rank=0,
                 resume_id=resume.id,
                 candidate_id=resume.user_id,
                 candidate_name=resume.user.full_name,
                 candidate_email=resume.user.email,
                 original_filename=resume.original_filename,
                 **score,
+                match_percentage=score["total_score"],
+                status=(
+                    "Shortlisted"
+                    if score["total_score"] >= 60
+                    else "Rejected"
+                ),
             )
         )
 
@@ -73,5 +80,8 @@ def screen_job_candidates(
         key=lambda result: result.total_score,
         reverse=True,
     )
+
+    for index, result in enumerate(results, start=1):
+        result.rank = index
 
     return results

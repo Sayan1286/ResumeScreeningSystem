@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 
 class ScreeningResult(BaseModel):
+    rank: int
     resume_id: int
     candidate_id: int
     candidate_name: str
@@ -13,3 +14,6 @@ class ScreeningResult(BaseModel):
     education_score: float
     keyword_score: float
     total_score: float
+
+    match_percentage: float
+    status: str
