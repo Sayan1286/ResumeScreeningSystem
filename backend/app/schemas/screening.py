@@ -17,3 +17,9 @@ class ScreeningResult(BaseModel):
 
     match_percentage: float
     status: str
+
+    skills_explanation: str
+    experience_explanation: str
+    education_explanation: str
+    keywords_explanation: str
+    recommendation: str

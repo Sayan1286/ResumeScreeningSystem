@@ -8,6 +8,9 @@ from app.models.resume import Resume
 from app.models.user import User
 from app.schemas.screening import ScreeningResult
 from app.services.screening import calculate_screening_score
+from app.services.screening_explanation import (
+    generate_screening_explanation,
+)
 
 
 router = APIRouter(
@@ -58,6 +61,14 @@ def screen_job_candidates(
             keywords=job.keywords,
         )
 
+        explanation = generate_screening_explanation(
+            skill_score=score["skill_score"],
+            experience_score=score["experience_score"],
+            education_score=score["education_score"],
+            keyword_score=score["keyword_score"],
+            total_score=score["total_score"],
+        )
+
         results.append(
             ScreeningResult(
                 rank=0,
@@ -68,11 +79,12 @@ def screen_job_candidates(
                 original_filename=resume.original_filename,
                 **score,
                 match_percentage=score["total_score"],
-                status=(
-                    "Shortlisted"
-                    if score["total_score"] >= 60
-                    else "Rejected"
-                ),
+                status=explanation["recommendation"],
+                skills_explanation=explanation["skills"],
+                experience_explanation=explanation["experience"],
+                education_explanation=explanation["education"],
+                keywords_explanation=explanation["keywords"],
+                recommendation=explanation["recommendation"],
             )
         )
 

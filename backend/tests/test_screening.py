@@ -247,6 +247,8 @@ def test_optional_requirements_do_not_reduce_score():
     assert result["education_score"] == 15.0
     assert result["keyword_score"] == 20.0
     assert result["total_score"] == 100.0
+
+
 def test_screening_result_has_ranking_fields():
     from app.schemas.screening import ScreeningResult
 
@@ -264,6 +266,11 @@ def test_screening_result_has_ranking_fields():
         total_score=100.0,
         match_percentage=100.0,
         status="Shortlisted",
+        skills_explanation="Strong match",
+        experience_explanation="Meets experience requirement",
+        education_explanation="Education requirement matched",
+        keywords_explanation="All keywords matched",
+        recommendation="Shortlisted",
     )
 
     assert result.rank == 1
@@ -288,6 +295,11 @@ def test_screening_result_rejected_status():
         total_score=45.0,
         match_percentage=45.0,
         status="Rejected",
+         skills_explanation="No matching skills found",
+        experience_explanation="Does not meet experience requirement",
+        education_explanation="Education requirement not matched",
+        keywords_explanation="No matching keywords found",
+        recommendation="Rejected",  
     )
 
     assert result.rank == 2
