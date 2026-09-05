@@ -1,6 +1,6 @@
 from logging.config import fileConfig
 from app.models.job import Job
-
+from app.models.resume import Resume
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 from app.core.config import settings

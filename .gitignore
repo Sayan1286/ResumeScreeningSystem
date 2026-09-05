@@ -23,3 +23,5 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+# Uploaded resumes
+backend/uploads/
