@@ -371,3 +371,16 @@ select:focus {
 .create-job form > button {
   justify-self: start;
 }
+.candidate-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.delete-button {
+  background: #dc2626;
+}
+
+.delete-button:hover {
+  background: #b91c1c;
+}
