@@ -172,8 +172,4 @@ The dashboard provides:
              └───────────┘   └─────────────┘  │ Education    │
                                               │ Keywords     │
                                               └──────────────┘
-Local Development
 
-Clone the repository:
-git clone https://github.com/Sayan1286/ResumeScreeningSystem.git
-cd ResumeScreeningSystem
