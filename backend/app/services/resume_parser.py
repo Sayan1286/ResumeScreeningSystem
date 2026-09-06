@@ -1,7 +1,13 @@
+import re
 from pathlib import Path
 
 import fitz
 from docx import Document
+
+
+EMAIL_PATTERN = re.compile(
+    r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
+)
 
 
 def extract_pdf_text(file_path: str) -> str:
@@ -33,6 +39,58 @@ def extract_docx_text(file_path: str) -> str:
     ]
 
     return "\n".join(paragraphs).strip()
+
+
+def extract_candidate_email(text: str) -> str | None:
+    match = EMAIL_PATTERN.search(text)
+
+    if match is None:
+        return None
+
+    return match.group(0)
+
+
+def extract_candidate_name(text: str) -> str | None:
+    lines = [
+        line.strip()
+        for line in text.splitlines()
+        if line.strip()
+    ]
+
+    if not lines:
+        return None
+
+    email = extract_candidate_email(text)
+
+    for line in lines[:10]:
+        if email and email.lower() in line.lower():
+            continue
+
+        cleaned = re.sub(
+            r"[^A-Za-z .'-]",
+            "",
+            line,
+        ).strip()
+
+        words = cleaned.split()
+
+        if 2 <= len(words) <= 5:
+            if all(
+                word.replace("-", "").replace("'", "").isalpha()
+                for word in words
+            ):
+                return cleaned
+
+    return None
+
+
+def extract_candidate_details(
+    text: str,
+) -> tuple[str | None, str | None]:
+    candidate_name = extract_candidate_name(text)
+    candidate_email = extract_candidate_email(text)
+
+    return candidate_name, candidate_email
 
 
 def extract_resume_text(

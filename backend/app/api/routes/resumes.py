@@ -9,7 +9,10 @@ from app.models.job import Job
 from app.models.resume import Resume
 from app.models.user import User
 from app.schemas.resume import ResumeResponse
-from app.services.resume_parser import extract_resume_text
+from app.services.resume_parser import (
+    extract_candidate_details,
+    extract_resume_text,
+)
 from app.utils.resume_storage import (
     generate_stored_filename,
     save_resume_file,
@@ -70,6 +73,10 @@ async def upload_resume(
             detail="Could not extract text from resume",
         )
 
+    candidate_name, candidate_email = extract_candidate_details(
+        extracted_text,
+    )
+
     resume = Resume(
         user_id=current_user.id,
         job_id=job.id,
@@ -79,6 +86,8 @@ async def upload_resume(
         file_type=extension.lstrip("."),
         file_size=file_size,
         extracted_text=extracted_text,
+        candidate_name=candidate_name,
+        candidate_email=candidate_email,
     )
 
     try:

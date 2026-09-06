@@ -45,7 +45,6 @@ def screen_job_candidates(
 
     resumes = (
         db.query(Resume)
-        .join(User, Resume.user_id == User.id)
         .filter(Resume.job_id == job.id)
         .all()
     )
@@ -74,8 +73,14 @@ def screen_job_candidates(
                 rank=0,
                 resume_id=resume.id,
                 candidate_id=resume.user_id,
-                candidate_name=resume.user.full_name,
-                candidate_email=resume.user.email,
+                candidate_name=(
+                    resume.candidate_name
+                    or "Unknown Candidate"
+                ),
+                candidate_email=(
+                    resume.candidate_email
+                    or "No email found"
+                ),
                 original_filename=resume.original_filename,
                 **score,
                 match_percentage=score["total_score"],

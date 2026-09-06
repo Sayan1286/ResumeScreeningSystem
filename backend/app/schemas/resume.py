@@ -13,6 +13,10 @@ class ResumeResponse(BaseModel):
     file_type: str
     file_size: int
     extracted_text: str | None
+
+    candidate_name: str | None
+    candidate_email: str | None
+
     created_at: datetime
     updated_at: datetime
 
