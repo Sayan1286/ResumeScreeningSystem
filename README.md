@@ -137,77 +137,60 @@ The dashboard provides:
 - Screening explanations
 - Resume management
 
----
 
-## Architecture
+## Technology Stack
 
-```text
-                         ┌──────────────────────┐
-                         │      Recruiter       │
-                         │                      │
-                         │   React + TypeScript │
-                         └──────────┬───────────┘
-                                    │
-                                    │ HTTP / REST API
-                                    ▼
-                         ┌──────────────────────┐
-                         │       FastAPI        │
-                         │                      │
-                         │ Authentication       │
-                         │ Job Management       │
-                         │ Resume Management    │
-                         │ Screening            │
-                         │ Candidate Ranking    │
-                         └──────────┬───────────┘
-                                    │
-                    ┌───────────────┼────────────────┐
-                    │               │                │
-                    ▼               ▼                ▼
-             ┌───────────┐   ┌─────────────┐  ┌──────────────┐
-             │ PostgreSQL│   │ Resume      │  │ Screening    │
-             │           │   │ Parser      │  │ Engine       │
-             │ Users     │   │             │  │              │
-             │ Jobs      │   │ PDF         │  │ Skills       │
-             │ Resumes   │   │ DOCX        │  │ Experience   │
-             └───────────┘   └─────────────┘  │ Education    │
-                                              │ Keywords     │
-                                              └──────────────┘
+### Frontend
 
-Technology Stack
-Frontend
-React.js – Build the interactive web interface
-Vite – Fast frontend development and build tooling
-HTML5 & CSS3 – Structure and styling
-JavaScript / TypeScript – Frontend logic
-Tailwind CSS – Responsive and modern UI design
-Backend
-Python 3.12+ – Primary backend language
-FastAPI – REST API framework
-Pydantic – Data validation and serialization
-SQLAlchemy – Database ORM
-Alembic – Database migrations
-Uvicorn – ASGI server
-Database
-PostgreSQL – Primary relational database
-Redis – Caching and background-task support
-AI / Machine Learning
-LLM API – AI-powered study planning and recommendations
-Python AI/ML libraries – For future recommendation and analytics features
-Authentication & Security
-JWT – User authentication
-OAuth2 – Authentication flow
-Passlib / bcrypt – Password hashing
-Environment variables (.env) – Secure configuration management
-Testing & Code Quality
-Pytest – Backend testing
-Ruff – Python linting
-Black – Code formatting
-MyPy – Static type checking
-DevOps & Tools
-Git & GitHub – Version control and collaboration
-Docker & Docker Compose – Containerization
-GitHub Actions – CI/CD
-Postman – API testing and development
-Architecture
+- **React.js** — Build the interactive web interface
+- **Vite** — Fast frontend development and build tooling
+- **HTML5 & CSS3** — Structure and styling
+- **JavaScript / TypeScript** — Frontend logic
+- **Tailwind CSS** — Responsive and modern UI design
 
-React + Vite → FastAPI REST API → SQLAlchemy → PostgreSQL
+### Backend
+
+- **Python 3.12+** — Primary backend language
+- **FastAPI** — REST API framework
+- **Pydantic** — Data validation and serialization
+- **SQLAlchemy** — Database ORM
+- **Alembic** — Database migrations
+- **Uvicorn** — ASGI server
+
+### Database
+
+- **PostgreSQL** — Primary relational database
+- **Redis** — Caching and background-task support
+
+### AI / Machine Learning
+
+- **LLM API** — AI-powered study planning and recommendations
+- **Python AI/ML libraries** — Future recommendation and analytics features
+
+### Authentication & Security
+
+- **JWT** — User authentication
+- **OAuth2** — Authentication flow
+- **PassLib / bcrypt** — Password hashing
+- **Environment Variables (.env)** — Secure configuration management
+
+### Testing & Code Quality
+
+- **Pytest** — Backend testing
+- **Ruff** — Python linting
+- **Black** — Code formatting
+- **MyPy** — Static type checking
+
+### DevOps & Tools
+
+- **Git & GitHub** — Version control and collaboration
+- **Docker & Docker Compose** — Containerization
+- **GitHub Actions** — CI/CD
+- **Postman** — API testing and development
+
+### Architecture
+
+- **RESTful API Architecture**
+- **Layered Backend Architecture**
+- **Frontend–Backend Separation**
+- **Database-driven application design**
