@@ -137,60 +137,147 @@ The dashboard provides:
 - Screening explanations
 - Resume management
 
-
 ## Technology Stack
 
-### Frontend
+| Category | Technology | Version |
+|---|---|---|
+| **Frontend Framework** | React | 19.x |
+| **Language (FE)** | TypeScript | 5.5+ |
+| **Build Tool** | Vite | 5.x |
+| **Styling** | Tailwind CSS | 3.4 |
+| **Routing** | React Router | 6.x |
+| **Data Fetching** | TanStack Query (React Query) | 5.x |
+| **HTTP Client** | Axios | 1.7+ |
+| **Forms** | React Hook Form + Zod | 7.x / 3.x |
+| **Animations** | Framer Motion | 11.x |
+| **Icons** | Lucide React | 0.424+ |
+| **Backend Framework** | FastAPI | 0.115+ |
+| **Language (BE)** | Python | 3.12+ |
+| **Database** | PostgreSQL | 18.x |
+| **ORM** | SQLAlchemy | 2.0+ |
+| **Migrations** | Alembic | 1.19+ |
+| **Validation** | Pydantic | v2 |
+| **Authentication** | JWT / OAuth2 | — |
+| **Password Hashing** | PassLib / bcrypt | — |
+| **Caching** | Redis | 7.x+ |
+| **AI / LLM** | LLM API | — |
+| **AI Libraries** | Python AI/ML Libraries | — |
+| **Testing** | Pytest | Latest |
+| **Linting** | Ruff | Latest |
+| **Formatting** | Black | Latest |
+| **Type Checking** | MyPy | Latest |
+| **Containerization** | Docker | Latest |
+| **Orchestration** | Docker Compose | Latest |
+| **CI/CD** | GitHub Actions | — |
+| **API Testing** | Postman | Latest |
+| **Version Control** | Git / GitHub | — |
 
-- **React.js** — Build the interactive web interface
-- **Vite** — Fast frontend development and build tooling
-- **HTML5 & CSS3** — Structure and styling
-- **JavaScript / TypeScript** — Frontend logic
-- **Tailwind CSS** — Responsive and modern UI design
+## Local Development
 
-### Backend
+### 1. Clone the Repository
 
-- **Python 3.12+** — Primary backend language
-- **FastAPI** — REST API framework
-- **Pydantic** — Data validation and serialization
-- **SQLAlchemy** — Database ORM
-- **Alembic** — Database migrations
-- **Uvicorn** — ASGI server
+```bash
+git clone https://github.com/Sayan1286/StudyPilot.git
+cd StudyPilot
+```
 
-### Database
+### 2. Set Up the Backend
 
-- **PostgreSQL** — Primary relational database
-- **Redis** — Caching and background-task support
+```bash
+cd backend
 
-### AI / Machine Learning
+# Create and activate virtual environment
+python -m venv .venv
 
-- **LLM API** — AI-powered study planning and recommendations
-- **Python AI/ML libraries** — Future recommendation and analytics features
+# Windows
+.venv\Scripts\activate
 
-### Authentication & Security
+# macOS / Linux
+source .venv/bin/activate
 
-- **JWT** — User authentication
-- **OAuth2** — Authentication flow
-- **PassLib / bcrypt** — Password hashing
-- **Environment Variables (.env)** — Secure configuration management
+# Install all dependencies
+pip install -r requirements.txt -r requirements-dev.txt
 
-### Testing & Code Quality
+# Copy environment file
+copy .env.example .env
+```
 
-- **Pytest** — Backend testing
-- **Ruff** — Python linting
-- **Black** — Code formatting
-- **MyPy** — Static type checking
+Edit `backend/.env` and configure the required environment variables.
 
-### DevOps & Tools
+### 3. Set Up the Database
 
-- **Git & GitHub** — Version control and collaboration
-- **Docker & Docker Compose** — Containerization
-- **GitHub Actions** — CI/CD
-- **Postman** — API testing and development
+Make sure PostgreSQL is running and the `studypilot` database has been created.
 
-### Architecture
+```bash
+# Run database migrations
+alembic upgrade head
+```
 
-- **RESTful API Architecture**
-- **Layered Backend Architecture**
-- **Frontend–Backend Separation**
-- **Database-driven application design**
+### 4. Start the Backend
+
+```bash
+# Start the FastAPI development server
+uvicorn app.main:app --reload --port 8000
+```
+
+The backend will be available at http://localhost:8000.
+
+Interactive API docs at http://localhost:8000/docs.
+
+### 5. Set Up the Frontend
+
+Open a **new terminal**:
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+```
+
+### 6. Start the Frontend
+
+```bash
+# Start the Vite development server
+npm run dev
+```
+
+The frontend will be available at http://localhost:5173.
+
+### 7. Run Backend Tests
+
+From the `backend` directory:
+
+```bash
+pytest
+```
+
+For verbose output:
+
+```bash
+pytest -v
+```
+
+### 8. Run Code Quality Checks
+
+From the `backend` directory:
+
+```bash
+# Linting
+ruff check .
+
+# Code formatting
+black .
+
+# Static type checking
+mypy .
+```
+
+### 9. Local Development URLs
+
+| Service | URL |
+|---|---|
+| **Frontend** | http://localhost:5173 |
+| **Backend API** | http://localhost:8000 |
+| **Interactive API Docs** | http://localhost:8000/docs |
+| **PostgreSQL** | localhost:5432 |
