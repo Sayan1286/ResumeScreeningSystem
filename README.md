@@ -326,3 +326,8 @@ mypy .
 | **Backend API** | http://localhost:8000 |
 | **Interactive API Docs** | http://localhost:8000/docs |
 | **PostgreSQL** | localhost:5432 |
+### 10. License
+
+This project is licensed under the MIT License.
+
+See the LICENSE file for details.
