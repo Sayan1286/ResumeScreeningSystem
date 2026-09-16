@@ -245,7 +245,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 ```
-
+```
 ### 3. Configure Environment Variables
 
 Create a .env file inside the backend directory.
@@ -256,7 +256,8 @@ JWT_ALGORITHM=HS256
 RESEND_API_KEY=your-resend-api-key
 MAIL_FROM=onboarding@resend.dev
 FRONTEND_URL=http://localhost:5173
-
+```
+```
 ### 4. Set Up the Database
   Make sure PostgreSQL is running and create the project database.
 
