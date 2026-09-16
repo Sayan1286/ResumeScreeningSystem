@@ -222,8 +222,8 @@ The recruiter dashboard provides access to:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Sayan1286/StudyPilot.git
-cd StudyPilot
+git clone https://github.com/Sayan1286/ResumeScreeningSystem.git
+cd ResumeScreeningSystem
 ```
 
 ### 2. Set Up the Backend
@@ -235,39 +235,39 @@ cd backend
 python -m venv .venv
 
 # Windows
-.venv\Scripts\activate
+.venv\Scripts\Activate.ps1
 
 # macOS / Linux
 source .venv/bin/activate
 
 # Install all dependencies
-pip install -r requirements.txt -r requirements-dev.txt
+pip install -r requirements.txt
 
-# Copy environment file
-copy .env.example .env
-```
-
-Edit `backend/.env` and configure the required environment variables.
+# Configure Environment Variables
+Create a .env file inside the backend directory.
+```DATABASE_URL=postgresql+psycopg://username:password@localhost:5432/resume_screening
+JWT_SECRET_KEY=your-secret-key
+JWT_ALGORITHM=HS256
+RESEND_API_KEY=your-resend-api-key
+MAIL_FROM=onboarding@resend.dev
+FRONTEND_URL=http://localhost:5173
 
 ### 3. Set Up the Database
-
-Make sure PostgreSQL is running and the `studypilot` database has been created.
+  Make sure PostgreSQL is running and create the project database.
 
 ```bash
 # Run database migrations
 alembic upgrade head
-```
+``` This applies all database migrations, including the Demo Jobs.
 
 ### 4. Start the Backend
 
 ```bash
-# Start the FastAPI development server
-uvicorn app.main:app --reload --port 8000
+# Running the Backend
+python -m uvicorn app.main:app --reload
 ```
 
-The backend will be available at http://localhost:8000.
-
-Interactive API docs at http://localhost:8000/docs.
+The backend will be available at http://127.0.0.1:8000
 
 ### 5. Set Up the Frontend
 
@@ -276,7 +276,7 @@ Open a **new terminal**:
 ```bash
 cd frontend
 
-# Install dependencies
+# Install frontend dependencies:
 npm install
 ```
 
@@ -289,45 +289,122 @@ npm run dev
 
 The frontend will be available at http://localhost:5173.
 
-### 7. Run Backend Tests
+### 7.Database Setup
 
-From the `backend` directory:
+The application uses PostgreSQL for persistent data storage.
+Alembic manages database migrations.
 
+ Run migrations:
+```bash
+alembic upgrade head
+```
+
+Check the current migration:
+
+```bash
+alembic current
+```
+View migration history:
+```bash
+alembic history
+```
+### 8.Environment Variables
+
+Backend
+
+Backend
+Variable	Description
+DATABASE_URL	PostgreSQL database connection URL
+JWT_SECRET_KEY	Secret used for JWT authentication
+JWT_ALGORITHM	JWT signing algorithm
+RESEND_API_KEY	Resend API key for password reset emails
+MAIL_FROM	Email sender address
+FRONTEND_URL	Frontend URL used for password reset links
+
+Frontend
+
+The deployed frontend is configured to communicate with the deployed FastAPI backend.
+
+### 9. API Documentation
+
+When the backend is running locally:
+ http://127.0.0.1:8000/docs
+The deployed API documentation is available at:
+
+https://resumescreeningsystem-wpxz.onrender.com/docs
+
+The API documentation is generated automatically using FastAPI and OpenAPI.
+
+### 10. Resume Screening
+
+The screening workflow is:
+
+Upload Resume
+      ↓
+Extract Resume Text
+      ↓
+Read Job Requirements
+      ↓
+Match Skills
+      ↓
+Match Experience
+      ↓
+Match Education
+      ↓
+Match Keywords
+      ↓
+Calculate Score
+      ↓
+Generate Screening Result
+### 11.Candidate Ranking
+
+Candidates are evaluated using their screening scores.
+
+Higher matching scores indicate stronger alignment with the selected job requirements.
+
+The system allows recruiters to review:
+
+Candidate information
+Resume information
+Screening score
+Category-level results
+Screening explanation
+
+### 12.Testing
+From the backend directory:
 ```bash
 pytest
 ```
-
-For verbose output:
-
+Run tests with verbose output:
 ```bash
 pytest -v
 ```
-
-### 8. Run Code Quality Checks
-
-From the `backend` directory:
+Run a specific test file:
+```bash
+pytest tests/test_jobs.py
+```
+### 13.Code Quality
+Ruff :
 
 ```bash
-# Linting
 ruff check .
-
-# Code formatting
-black .
-
-# Static type checking
+```
+MyPy:
+```bash
 mypy .
 ```
+Git Diff Check
+```bash
+git diff --check
+```
+### 14.Deployment
+The current MVP is deployed using Render.
+Frontend
+https://resumescreeningsystem-1-qnrg.onrender.com
+Backend
+https://resumescreeningsystem-wpxz.onrender.com
+API Documentation
+https://resumescreeningsystem-wpxz.onrender.com/docs
+Email Service
 
-### 9. Local Development URLs
-
-| Service | URL |
-|---|---|
-| **Frontend** | http://localhost:5173 |
-| **Backend API** | http://localhost:8000 |
-| **Interactive API Docs** | http://localhost:8000/docs |
-| **PostgreSQL** | localhost:5432 |
-### 10. License
-
-This project is licensed under the MIT License.
-
-See the LICENSE file for details.
+Password reset emails are sent using Resend.
