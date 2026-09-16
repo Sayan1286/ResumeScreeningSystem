@@ -292,6 +292,7 @@ The frontend will be available at http://localhost:5173.
 ### 7.Database Setup
 
 The application uses PostgreSQL for persistent data storage.
+
 Alembic manages database migrations.
 
  Run migrations:
@@ -312,7 +313,6 @@ alembic history
 
 Backend
 
-Backend
 Variable	Description
 DATABASE_URL	PostgreSQL database connection URL
 JWT_SECRET_KEY	Secret used for JWT authentication
@@ -329,8 +329,8 @@ The deployed frontend is configured to communicate with the deployed FastAPI bac
 
 When the backend is running locally:
  http://127.0.0.1:8000/docs
-The deployed API documentation is available at:
 
+The deployed API documentation is available at:
 https://resumescreeningsystem-wpxz.onrender.com/docs
 
 The API documentation is generated automatically using FastAPI and OpenAPI.
@@ -401,10 +401,12 @@ git diff --check
 The current MVP is deployed using Render.
 Frontend
 https://resumescreeningsystem-1-qnrg.onrender.com
+
 Backend
 https://resumescreeningsystem-wpxz.onrender.com
+
 API Documentation
 https://resumescreeningsystem-wpxz.onrender.com/docs
-Email Service
 
+Email Service
 Password reset emails are sent using Resend.
