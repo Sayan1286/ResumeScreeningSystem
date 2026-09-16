@@ -7,7 +7,7 @@ type LoginProps = {
 
 type Mode = "login" | "register" | "forgot" | "reset";
 
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://resumescreeningsystem-wpxz.onrender.com";;
 
 export default function Login({ onLogin }: LoginProps) {
   const resetToken = new URLSearchParams(window.location.search).get(
