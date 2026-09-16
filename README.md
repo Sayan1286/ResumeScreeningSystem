@@ -1,5 +1,4 @@
 # Resume Screening System 📄
-
 > **AI-powered resume screening and candidate ranking platform — helping recruiters discover the most relevant candidates faster and more efficiently.**
 
 [![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python)](https://python.org/)
@@ -13,10 +12,29 @@
 
 ---
 
+## 🌐 Live Demo
+
+### Frontend
+
+https://resumescreeningsystem-1-qnrg.onrender.com
+
+### Backend API
+
+https://resumescreeningsystem-wpxz.onrender.com
+
+### Interactive API Documentation
+
+https://resumescreeningsystem-wpxz.onrender.com/docs
+
+> **Note:** This project is currently deployed as an MVP for demonstration and testing purposes.
+
+---
+
 ## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
+- [Demo Jobs](#demo-jobs)
 - [Architecture](#architecture)
 - [Technology Stack](#technology-stack)
 - [Folder Structure](#folder-structure)
@@ -30,7 +48,7 @@
 - [Resume Screening](#resume-screening)
 - [Candidate Ranking](#candidate-ranking)
 - [Testing](#testing)
-- [Docker Setup](#docker-setup)
+- [Deployment](#deployment)
 - [Screenshots](#screenshots)
 - [Contributing](#contributing)
 - [License](#license)
@@ -40,37 +58,65 @@
 
 ## Overview
 
-Resume Screening System is a full-stack recruitment platform designed to automate the initial resume screening process.
+Resume Screening System is a full-stack recruitment platform designed to simplify and automate the initial resume screening process.
 
-Recruiters can create job openings, upload candidate resumes, and automatically evaluate candidates based on job-specific requirements such as:
+Recruiters can create job openings, upload candidate resumes, and evaluate candidates based on job-specific requirements such as:
 
 - Required skills
 - Years of experience
 - Education
 - Relevant keywords
 
-The system extracts text from uploaded PDF and DOCX resumes, analyzes the extracted content, calculates a weighted screening score, ranks candidates, and provides an explanation for the screening decision.
+The system extracts text from uploaded PDF and DOCX resumes, analyzes the extracted content, calculates a weighted screening score, ranks candidates, and provides explanations for the screening decision.
 
-The goal is to reduce manual resume screening effort and provide recruiters with a structured and transparent way to compare candidates.
+The goal is to reduce manual resume screening effort and provide recruiters with a structured way to compare candidates.
 
 ---
 
 ## Features
 
-### 👤 Recruiter
+### 👤 Authentication & Recruiter Management
 
-- 🔐 Recruiter registration and login
+- 🔐 Recruiter registration
 - 🔑 JWT-based authentication
-- 👤 Recruiter profile information
-- 💼 Create job openings
-- ✏️ Update job requirements
-- 🗑️ Delete job openings
-- 📋 View recruiter-owned jobs
-- 📄 Upload candidate resumes
-- 🗑️ Delete uploaded resumes
-- 📊 View candidate rankings
-- 🔎 View detailed candidate screening results
-- 📈 View job-level screening statistics
+- 👤 Recruiter account management
+- 🔒 Secure password hashing
+- 📧 Password reset through email
+- 🔗 Token-based password reset links
+
+### 💼 Job Management
+
+- ➕ Create job openings
+- ✏️ Update recruiter-owned jobs
+- 🗑️ Delete recruiter-owned jobs
+- 📋 View available jobs
+- 🔎 View job details
+- 🔐 Recruiter ownership checks
+
+### 🎯 Shared Demo Jobs
+
+The system includes **10 permanent Demo Jobs** that are available to registered users.
+
+Demo Jobs include:
+
+- Junior Data Analyst
+- Python Backend Developer
+- Frontend Developer
+- Full Stack Developer
+- Software Engineer
+- Machine Learning Engineer
+- Data Scientist
+- DevOps Engineer
+- QA / Software Tester
+- UI/UX Designer
+
+Demo Jobs:
+
+- ✅ Are available to all users
+- ✅ Cannot be edited
+- ✅ Cannot be deleted
+- ✅ Are shared across users
+- ✅ Keep user resume/screening data isolated
 
 ### 📄 Resume Management
 
@@ -83,7 +129,7 @@ The goal is to reduce manual resume screening effort and provide recruiters with
 - Candidate name extraction
 - Candidate email extraction
 - Resume metadata storage
-- Secure recruiter ownership checks
+- Secure ownership checks
 
 ### 🤖 Resume Screening
 
@@ -101,41 +147,40 @@ The screening engine analyzes the extracted resume text against the requirements
 
 ### 🏆 Candidate Ranking
 
-Candidates are automatically:
+Candidates can be:
 
 - Scored
 - Sorted by total score
-- Assigned a ranking
-- Classified as shortlisted or rejected
-- Displayed in the recruiter dashboard
-
-The ranking system makes it easy for recruiters to identify the strongest candidates.
+- Ranked
+- Classified according to screening results
+- Reviewed through detailed screening information
 
 ### 💡 Screening Explanations
 
-Every screening result includes explanations for:
+Screening results provide explanations for:
 
 - Skills match
 - Experience match
 - Education match
 - Keyword match
-- Overall recommendation
+- Overall screening result
 
-This makes the screening process more transparent instead of showing only a numerical score.
+This makes the screening process more transparent than showing only a numerical score.
 
-### 📊 Recruiter Dashboard
+### 📊 Dashboard
 
-The dashboard provides:
+The recruiter dashboard provides access to:
 
-- Total jobs
-- Total candidates
-- Screened resumes
-- Shortlisted candidates
-- Average candidate score
-- Candidate ranking
-- Candidate details
-- Screening explanations
+- Job listings
+- Candidate resumes
+- Screening results
+- Candidate rankings
+- Job information
 - Resume management
+- Screening details
+
+---
+
 
 ## Technology Stack
 
