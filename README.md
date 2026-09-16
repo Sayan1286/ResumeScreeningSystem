@@ -245,7 +245,8 @@ pip install -r requirements.txt
 
 # Configure Environment Variables
 Create a .env file inside the backend directory.
-```DATABASE_URL=postgresql+psycopg://username:password@localhost:5432/resume_screening
+
+DATABASE_URL=postgresql+psycopg://username:password@localhost:5432/resume_screening
 JWT_SECRET_KEY=your-secret-key
 JWT_ALGORITHM=HS256
 RESEND_API_KEY=your-resend-api-key
@@ -398,6 +399,7 @@ Git Diff Check
 git diff --check
 ```
 ### 14.Deployment
+
 The current MVP is deployed using Render.
 Frontend
 https://resumescreeningsystem-1-qnrg.onrender.com
@@ -410,3 +412,46 @@ https://resumescreeningsystem-wpxz.onrender.com/docs
 
 Email Service
 Password reset emails are sent using Resend.
+
+### 15.Screenshots
+
+Add application screenshots here.
+
+![Login Page](docs/screenshots/login.png)
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+![Job Listings](docs/screenshots/jobs.png)
+
+![Candidate Screening](docs/screenshots/screening.png)
+
+### 16.Security Notes
+
+The application includes:
+
+JWT authentication
+Password hashing
+Token-based password reset
+Resume ownership checks
+Job ownership checks
+File validation
+Protected API endpoints
+Environment-based secret configuration
+
+Production deployments should use secure secrets and properly configured domain/email settings.
+
+### 17.License
+
+This project is licensed under the MIT License.
+
+See the LICENSE file for details.
+
+### 17.Contact
+
+Sayan Das
+
+GitHub:
+https://github.com/Sayan1286
+
+Repository:
+https://github.com/Sayan1286/ResumeScreeningSystem
