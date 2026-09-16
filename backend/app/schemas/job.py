@@ -4,29 +4,11 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class JobCreate(BaseModel):
-    title: str = Field(
-        min_length=1,
-        max_length=255,
-    )
-
-    description: str = Field(
-        min_length=1,
-    )
-
-    required_skills: str = Field(
-        min_length=1,
-    )
-
-    min_experience: int = Field(
-        default=0,
-        ge=0,
-    )
-
-    education: str | None = Field(
-        default=None,
-        max_length=255,
-    )
-
+    title: str = Field(min_length=1, max_length=255)
+    description: str = Field(min_length=1)
+    required_skills: str = Field(min_length=1)
+    min_experience: int = Field(default=0, ge=0)
+    education: str | None = Field(default=None, max_length=255)
     keywords: str | None = None
 
 
@@ -36,33 +18,29 @@ class JobUpdate(BaseModel):
         min_length=1,
         max_length=255,
     )
-
     description: str | None = Field(
         default=None,
         min_length=1,
     )
-
     required_skills: str | None = Field(
         default=None,
         min_length=1,
     )
-
     min_experience: int | None = Field(
         default=None,
         ge=0,
     )
-
     education: str | None = Field(
         default=None,
         max_length=255,
     )
-
     keywords: str | None = None
 
 
 class JobResponse(BaseModel):
     id: int
-    recruiter_id: int
+    recruiter_id: int | None
+    is_demo: bool
     title: str
     description: str
     required_skills: str
@@ -72,6 +50,4 @@ class JobResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    model_config = ConfigDict(
-        from_attributes=True,
-    )
+    model_config = ConfigDict(from_attributes=True)

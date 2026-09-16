@@ -41,7 +41,10 @@ async def upload_resume(
         db.query(Job)
         .filter(
             Job.id == job_id,
-            Job.recruiter_id == current_user.id,
+            (
+                Job.is_demo.is_(True)
+                | (Job.recruiter_id == current_user.id)
+            ),
         )
         .first()
     )

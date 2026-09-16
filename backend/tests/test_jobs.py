@@ -86,6 +86,7 @@ def test_create_job():
         assert data["keywords"] == "FastAPI, SQLAlchemy, REST API"
         assert data["recruiter_id"] is not None
         assert data["id"] is not None
+        assert data["is_demo"] is False
         assert "created_at" in data
         assert "updated_at" in data
 
@@ -127,9 +128,25 @@ def test_list_jobs():
 
         data = response.json()
 
-        assert len(data) == 2
-        assert data[0]["title"] == "Python Developer"
-        assert data[1]["title"] == "Backend Engineer"
+        demo_jobs = [
+            job for job in data
+            if job["is_demo"]
+        ]
+
+        my_jobs = [
+            job for job in data
+            if not job["is_demo"]
+        ]
+
+        assert len(demo_jobs) == 10
+        assert len(my_jobs) == 2
+
+        my_job_titles = {job["title"] for job in my_jobs}
+
+        assert my_job_titles == {
+            "Backend Engineer",
+            "Python Developer",
+        }
 
     finally:
         cleanup_user(email)

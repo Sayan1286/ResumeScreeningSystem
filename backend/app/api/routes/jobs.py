@@ -26,6 +26,7 @@ def create_job(
 ):
     job = Job(
         recruiter_id=current_user.id,
+        is_demo=False,
         title=job_data.title,
         description=job_data.description,
         required_skills=job_data.required_skills,
@@ -51,8 +52,14 @@ def list_jobs(
 ):
     return (
         db.query(Job)
-        .filter(Job.recruiter_id == current_user.id)
-        .order_by(Job.created_at.desc())
+        .filter(
+            (Job.is_demo.is_(True))
+            | (Job.recruiter_id == current_user.id)
+        )
+        .order_by(
+            Job.is_demo.desc(),
+            Job.created_at.desc(),
+        )
         .all()
     )
 
@@ -70,7 +77,10 @@ def get_job(
         db.query(Job)
         .filter(
             Job.id == job_id,
-            Job.recruiter_id == current_user.id,
+            (
+                Job.is_demo.is_(True)
+                | (Job.recruiter_id == current_user.id)
+            ),
         )
         .first()
     )
@@ -99,6 +109,7 @@ def update_job(
         .filter(
             Job.id == job_id,
             Job.recruiter_id == current_user.id,
+            Job.is_demo.is_(False),
         )
         .first()
     )
@@ -106,7 +117,7 @@ def update_job(
     if job is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Job not found",
+            detail="Job not found or demo job cannot be modified",
         )
 
     update_data = job_data.model_dump(exclude_unset=True)
@@ -134,6 +145,7 @@ def delete_job(
         .filter(
             Job.id == job_id,
             Job.recruiter_id == current_user.id,
+            Job.is_demo.is_(False),
         )
         .first()
     )
@@ -141,7 +153,7 @@ def delete_job(
     if job is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Job not found",
+            detail="Job not found or demo job cannot be deleted",
         )
 
     db.delete(job)

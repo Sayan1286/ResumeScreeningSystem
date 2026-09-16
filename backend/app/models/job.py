@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, String, Text, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
@@ -14,9 +14,17 @@ class Job(Base):
         index=True,
     )
 
-    recruiter_id: Mapped[int] = mapped_column(
+    recruiter_id: Mapped[int | None] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=True,
+        index=True,
+    )
+
+    is_demo: Mapped[bool] = mapped_column(
+        Boolean,
         nullable=False,
+        default=False,
+        server_default="false",
         index=True,
     )
 

@@ -384,3 +384,225 @@ select:focus {
 .delete-button:hover {
   background: #b91c1c;
 }
+/* ================================
+   LOGIN / REGISTER PAGE
+================================ */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f4f7fb;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.login-card h1 {
+  margin: 0 0 8px;
+  text-align: center;
+  color: #172b4d;
+  font-size: 28px;
+  line-height: 1.25;
+}
+
+.login-card > p {
+  margin: 0 0 28px;
+  text-align: center;
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* Labels */
+
+.login-card label {
+  display: block;
+  margin: 16px 0 7px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Inputs */
+
+.login-card input {
+  display: block;
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1e293b;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+}
+
+.login-card input:focus {
+  border-color: #3563e9;
+  box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.12);
+}
+
+.login-card input::placeholder {
+  color: #94a3b8;
+}
+
+/* Main Login / Register button */
+
+.login-card button[type="submit"] {
+  display: block;
+  width: 100%;
+  height: 46px;
+  margin-top: 22px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 8px;
+  background: #3563e9;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-card button[type="submit"]:hover {
+  background: #2852d5;
+}
+
+.login-card button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Forgot password */
+
+.login-card .forgot-password {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #3563e9;
+  font-size: 14px;
+  text-align: right;
+  cursor: pointer;
+}
+
+.login-card .forgot-password:hover {
+  background: transparent;
+  color: #2852d5;
+  text-decoration: underline;
+}
+
+/* Error */
+
+.login-card .error {
+  margin: 12px 0 0;
+  padding: 10px;
+  border-radius: 6px;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+/* Success */
+
+.login-card .success {
+  margin: 12px 0 0;
+  padding: 10px;
+  border-radius: 6px;
+  background: #f0fdf4;
+  color: #15803d;
+  font-size: 14px;
+}
+
+/* Login / Register switch */
+
+.auth-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 22px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.login-card .auth-switch button {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: #3563e9;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-card .auth-switch button:hover {
+  background: transparent;
+  color: #2852d5;
+  text-decoration: underline;
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 28px 22px;
+  }
+
+  .login-card h1 {
+    font-size: 24px;
+  }
+}
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 48px;
+  box-sizing: border-box;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+
+  border: none;
+  background: transparent;
+  padding: 4px;
+
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle:hover {
+  opacity: 0.7;
+}
+
+.password-toggle:focus {
+  outline: none;
+}

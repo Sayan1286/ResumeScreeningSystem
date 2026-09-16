@@ -2,8 +2,21 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { apiRequest } from "./api";
 
+interface Job {
+  id: number;
+  recruiter_id: number;
+  title: string;
+  description: string;
+  required_skills: string;
+  min_experience: number;
+  education: string | null;
+  keywords: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 interface CreateJobProps {
-  onJobCreated: () => void;
+  onJobCreated: (job: Job) => void;
 }
 
 function CreateJob({ onJobCreated }: CreateJobProps) {
@@ -24,7 +37,7 @@ function CreateJob({ onJobCreated }: CreateJobProps) {
     setLoading(true);
 
     try {
-      await apiRequest("/jobs", {
+      const createdJob = await apiRequest("/jobs", {
         method: "POST",
         body: JSON.stringify({
           title,
@@ -43,7 +56,7 @@ function CreateJob({ onJobCreated }: CreateJobProps) {
       setEducation("");
       setKeywords("");
 
-      onJobCreated();
+      onJobCreated(createdJob);
     } catch {
       setError("Unable to create job.");
     } finally {
@@ -55,85 +68,85 @@ function CreateJob({ onJobCreated }: CreateJobProps) {
     <section className="welcome-card create-job">
       <h2>Create New Job</h2>
 
-    <form onSubmit={handleSubmit}>
-  <div className="form-group">
-    <label>Job Title</label>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Job Title</label>
 
-    <input
-      type="text"
-      value={title}
-      onChange={(event) => setTitle(event.target.value)}
-      placeholder="e.g. Junior Data Analyst"
-      required
-    />
-  </div>
+          <input
+            type="text"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            placeholder="e.g. Junior Data Analyst"
+            required
+          />
+        </div>
 
-  <div className="form-group">
-    <label>Description</label>
+        <div className="form-group">
+          <label>Description</label>
 
-    <textarea
-      value={description}
-      onChange={(event) => setDescription(event.target.value)}
-      placeholder="Describe the job requirements..."
-      required
-    />
-  </div>
+          <textarea
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Describe the job requirements..."
+            required
+          />
+        </div>
 
-  <div className="form-group">
-    <label>Required Skills</label>
+        <div className="form-group">
+          <label>Required Skills</label>
 
-    <input
-      type="text"
-      value={requiredSkills}
-      onChange={(event) =>
-        setRequiredSkills(event.target.value)
-      }
-      placeholder="Python, MySQL, Excel"
-      required
-    />
-  </div>
+          <input
+            type="text"
+            value={requiredSkills}
+            onChange={(event) =>
+              setRequiredSkills(event.target.value)
+            }
+            placeholder="Python, MySQL, Excel"
+            required
+          />
+        </div>
 
-  <div className="form-group">
-    <label>Minimum Experience (years)</label>
+        <div className="form-group">
+          <label>Minimum Experience (years)</label>
 
-    <input
-      type="number"
-      min="0"
-      value={minExperience}
-      onChange={(event) =>
-        setMinExperience(Number(event.target.value))
-      }
-    />
-  </div>
+          <input
+            type="number"
+            min="0"
+            value={minExperience}
+            onChange={(event) =>
+              setMinExperience(Number(event.target.value))
+            }
+          />
+        </div>
 
-  <div className="form-group">
-    <label>Education</label>
+        <div className="form-group">
+          <label>Education</label>
 
-    <input
-      type="text"
-      value={education}
-      onChange={(event) => setEducation(event.target.value)}
-      placeholder="B.Tech"
-    />
-  </div>
+          <input
+            type="text"
+            value={education}
+            onChange={(event) => setEducation(event.target.value)}
+            placeholder="B.Tech"
+          />
+        </div>
 
-  <div className="form-group">
-    <label>Keywords</label>
+        <div className="form-group">
+          <label>Keywords</label>
 
-    <input
-      type="text"
-      value={keywords}
-      onChange={(event) => setKeywords(event.target.value)}
-      placeholder="Data Analysis, Database, Computer Science"
-    />
-  </div>
+          <input
+            type="text"
+            value={keywords}
+            onChange={(event) => setKeywords(event.target.value)}
+            placeholder="Data Analysis, Database, Computer Science"
+          />
+        </div>
 
-  {error && <p className="error">{error}</p>}
+        {error && <p className="error">{error}</p>}
 
-  <button type="submit" disabled={loading}>
-    {loading ? "Creating Job..." : "Create Job"}
-  </button>
-  </form> 
+        <button type="submit" disabled={loading}>
+          {loading ? "Creating Job..." : "Create Job"}
+        </button>
+      </form>
     </section>
   );
 }
