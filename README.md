@@ -233,17 +233,21 @@ cd backend
 
 # Create and activate virtual environment
 python -m venv .venv
-
+```
 # Windows
 .venv\Scripts\Activate.ps1
 
 # macOS / Linux
 source .venv/bin/activate
-
+```
 # Install all dependencies
+```
 pip install -r requirements.txt
 
-# Configure Environment Variables
+```
+
+### 3. Configure Environment Variables
+
 Create a .env file inside the backend directory.
 
 DATABASE_URL=postgresql+psycopg://username:password@localhost:5432/resume_screening
@@ -253,15 +257,16 @@ RESEND_API_KEY=your-resend-api-key
 MAIL_FROM=onboarding@resend.dev
 FRONTEND_URL=http://localhost:5173
 
-### 3. Set Up the Database
+### 4. Set Up the Database
   Make sure PostgreSQL is running and create the project database.
 
 ```bash
 # Run database migrations
 alembic upgrade head
-``` This applies all database migrations, including the Demo Jobs.
+```
+This applies all database migrations, including the Demo Jobs.
 
-### 4. Start the Backend
+### 5. Start the Backend
 
 ```bash
 # Running the Backend
@@ -270,7 +275,7 @@ python -m uvicorn app.main:app --reload
 
 The backend will be available at http://127.0.0.1:8000
 
-### 5. Set Up the Frontend
+### 6. Set Up the Frontend
 
 Open a **new terminal**:
 
@@ -281,7 +286,7 @@ cd frontend
 npm install
 ```
 
-### 6. Start the Frontend
+### 7. Start the Frontend
 
 ```bash
 # Start the Vite development server
@@ -290,7 +295,7 @@ npm run dev
 
 The frontend will be available at http://localhost:5173.
 
-### 7.Database Setup
+### 8.Database Setup
 
 The application uses PostgreSQL for persistent data storage.
 
@@ -310,7 +315,7 @@ View migration history:
 ```bash
 alembic history
 ```
-### 8.Environment Variables
+### 9.Environment Variables
 
 Backend
 
@@ -326,7 +331,7 @@ Frontend
 
 The deployed frontend is configured to communicate with the deployed FastAPI backend.
 
-### 9. API Documentation
+### 10. API Documentation
 
 When the backend is running locally:
  http://127.0.0.1:8000/docs
@@ -336,7 +341,7 @@ https://resumescreeningsystem-wpxz.onrender.com/docs
 
 The API documentation is generated automatically using FastAPI and OpenAPI.
 
-### 10. Resume Screening
+### 11. Resume Screening
 
 The screening workflow is:
 
@@ -357,7 +362,7 @@ Match Keywords
 Calculate Score
       ↓
 Generate Screening Result
-### 11.Candidate Ranking
+### 12.Candidate Ranking
 
 Candidates are evaluated using their screening scores.
 
@@ -371,7 +376,7 @@ Screening score
 Category-level results
 Screening explanation
 
-### 12.Testing
+### 13.Testing
 From the backend directory:
 ```bash
 pytest
@@ -384,7 +389,7 @@ Run a specific test file:
 ```bash
 pytest tests/test_jobs.py
 ```
-### 13.Code Quality
+### 14.Code Quality
 Ruff :
 
 ```bash
@@ -398,7 +403,7 @@ Git Diff Check
 ```bash
 git diff --check
 ```
-### 14.Deployment
+### 15.Deployment
 
 The current MVP is deployed using Render.
 Frontend
@@ -413,7 +418,7 @@ https://resumescreeningsystem-wpxz.onrender.com/docs
 Email Service
 Password reset emails are sent using Resend.
 
-### 15.Screenshots
+### 16.Screenshots
 
 Add application screenshots here.
 
@@ -425,7 +430,7 @@ Add application screenshots here.
 
 ![Candidate Screening](docs/screenshots/screening.png)
 
-### 16.Security Notes
+### 17.Security Notes
 
 The application includes:
 
@@ -440,13 +445,13 @@ Environment-based secret configuration
 
 Production deployments should use secure secrets and properly configured domain/email settings.
 
-### 17.License
+### 18.License
 
 This project is licensed under the MIT License.
 
 See the LICENSE file for details.
 
-### 17.Contact
+### 19.Contact
 
 Sayan Das
 
