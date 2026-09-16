@@ -233,31 +233,36 @@ cd backend
 
 # Create and activate virtual environment
 python -m venv .venv
-```
+
 # Windows
 .venv\Scripts\Activate.ps1
 
 # macOS / Linux
 source .venv/bin/activate
-```
+
 # Install all dependencies
-```
+
 pip install -r requirements.txt
 
-```
+
 ```
 ### 3. Configure Environment Variables
 
 Create a .env file inside the backend directory.
 
 DATABASE_URL=postgresql+psycopg://username:password@localhost:5432/resume_screening
+
 JWT_SECRET_KEY=your-secret-key
+
 JWT_ALGORITHM=HS256
+
 RESEND_API_KEY=your-resend-api-key
+
 MAIL_FROM=onboarding@resend.dev
+
 FRONTEND_URL=http://localhost:5173
-```
-```
+
+
 ### 4. Set Up the Database
   Make sure PostgreSQL is running and create the project database.
 
@@ -296,7 +301,7 @@ npm run dev
 
 The frontend will be available at http://localhost:5173.
 
-### 8.Database Setup
+### 8. Database Setup
 
 The application uses PostgreSQL for persistent data storage.
 
@@ -316,7 +321,7 @@ View migration history:
 ```bash
 alembic history
 ```
-### 9.Environment Variables
+### 9. Environment Variables
 
 Backend
 
@@ -363,7 +368,7 @@ Match Keywords
 Calculate Score
       ↓
 Generate Screening Result
-### 12.Candidate Ranking
+### 12. Candidate Ranking
 
 Candidates are evaluated using their screening scores.
 
@@ -377,7 +382,7 @@ Screening score
 Category-level results
 Screening explanation
 
-### 13.Testing
+### 13. Testing
 From the backend directory:
 ```bash
 pytest
@@ -390,7 +395,7 @@ Run a specific test file:
 ```bash
 pytest tests/test_jobs.py
 ```
-### 14.Code Quality
+### 14. Code Quality
 Ruff :
 
 ```bash
@@ -404,7 +409,7 @@ Git Diff Check
 ```bash
 git diff --check
 ```
-### 15.Deployment
+### 15. Deployment
 
 The current MVP is deployed using Render.
 Frontend
@@ -419,7 +424,7 @@ https://resumescreeningsystem-wpxz.onrender.com/docs
 Email Service
 Password reset emails are sent using Resend.
 
-### 16.Screenshots
+### 16. Screenshots
 
 Add application screenshots here.
 
@@ -431,7 +436,7 @@ Add application screenshots here.
 
 ![Candidate Screening](docs/screenshots/screening.png)
 
-### 17.Security Notes
+### 17. Security Notes
 
 The application includes:
 
@@ -446,13 +451,13 @@ Environment-based secret configuration
 
 Production deployments should use secure secrets and properly configured domain/email settings.
 
-### 18.License
+### 18. License
 
 This project is licensed under the MIT License.
 
 See the LICENSE file for details.
 
-### 19.Contact
+### 19. Contact
 
 Sayan Das
 
