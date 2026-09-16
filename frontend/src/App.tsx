@@ -4,8 +4,7 @@ import CreateJob from "./CreateJob";
 import UploadResume from "./UploadResume";
 import "./App.css";
 
-const API_BASE_URL = "http://127.0.0.1:8000";
-
+const API_BASE_URL = "https://resumescreeningsystem-wpxz.onrender.com";
 interface Job {
   id: number;
   recruiter_id: number | null;
